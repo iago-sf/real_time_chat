@@ -1,0 +1,132 @@
+* {
+    margin: 0; 
+    padding: 0;
+    word-wrap: break-word;
+}
+html{
+    height: 100%;
+}
+body{
+    height: 100%;
+}
+.h100{
+    height: 97.5%;
+}
+
+#forml { 
+    background: rgba(0, 0, 0); 
+    border-radius: 20px; 
+    text-align: center; 
+    align-content: center; 
+    width: 15%; 
+    position: fixed; 
+    padding: 1rem; 
+    top: 35%; 
+    left: 42%;
+}
+
+.inputs {
+    border: none; 
+    padding: 0.5rem; 
+    border-radius: 2rem; 
+    margin: 1rem; 
+    width: 80%;
+}
+
+#formc {
+    position: relative; 
+    background: rgba(0, 0, 0); 
+    padding: 0.25rem;  
+    bottom: 0; 
+    left: 0; 
+    right: 0; 
+    display: flex; 
+    height: 3rem; 
+    box-sizing: border-box;
+}
+
+#input { 
+    border: none; 
+    padding: 0 1rem; 
+    flex-grow: 1; 
+    border-radius: 2rem; 
+    margin: 0.25rem; 
+}
+#input:focus { 
+    outline: none; 
+}
+#form > button { 
+    background: rgb(175, 175, 175); 
+    border: none; 
+    padding: 0 1rem; 
+    margin: 0.25rem; 
+    border-radius: 3px; 
+    outline: none; 
+    color: rgb(0, 0, 0); 
+}
+
+#messages { 
+    list-style-type: none; 
+    margin: 0; 
+    padding: 0; 
+}
+#messages > li { 
+    padding: 0.5rem 1rem; 
+}
+#messages > li:nth-child(odd) { 
+    background: #efefef; 
+}
+
+.boton{
+    background-color: white; 
+    color: black; 
+    border: 2px solid black;
+    padding: .5rem;
+    border-radius: 10%;
+}
+.boton:hover {
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+}
+
+.boton_2{
+    background-color: red; 
+    color: white; 
+    border: 2px solid red;
+    padding: .5rem;
+    border-radius: 10%;
+}
+.boton_2:hover {
+    background-color: white;
+    color: red;
+    border: 2px solid red;
+}
+
+.blackcolor{
+    background: rgb(0, 0, 0);
+}
+
+.r-border{
+    border-radius: 25px;
+}
+
+.r-border-b{
+    border-radius: 0px 0px 25px 25px
+}
+
+#err_reg, #err_log{
+    color: red;
+}
+
+.title{
+    background-color: black;
+    text-align: center;
+}
+.t-text{
+    color: white;
+}
+
+.c-green{
+    color: green;
+}

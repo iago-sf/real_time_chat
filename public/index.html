@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chat de Iago</title>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="assets/bootstrap.min.css">
+    </head>
+    <body>
+        <div id="loginP" style="display: block;">
+            <div class="title">
+                <div class="container">
+                    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
+                        <h2 class="t-text">Node Chat V3</h2>
+                        <div class="col-md-3 text-end">
+                            <button onclick="log_reg(false);" class="boton">Register</button>
+                        </div>
+                    </header>
+                </div>
+            </div>
+
+            <div id="forml">
+                <select name="rooms" id="rooms" class="r-border">
+                    <option value="room1">Room 1</option>
+                    <option value="room2">Room 2</option>
+                    <option value="room3">Room 3</option>
+                    <option value="room4">Room 4</option>
+                    <option value="room5">Room 5</option>
+                </select>
+                <input id="log_user" autocomplete="off" placeholder="Nickname" class="inputs"/>
+                <input id="log_password" type="password" placeholder="Password" class="inputs"/>
+                <button onclick=" log_click(); " class="boton">Sign in</button>
+                <div id="err_log" hidden>You need to be registered</div>
+            </div>
+        </div>
+
+        <div id="regUser" style="display: none;">
+            <div class="title">
+                <div class="container">
+                    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
+                        <h2 class="t-text">Node Chat V3</h2>
+                        <div class="col-md-3 text-end">
+                            <button onclick="log_reg(true);" class="boton">Login</button>
+                        </div>
+                    </header>
+                </div>
+            </div>
+
+            <div id="forml">
+                <input id="reg_user" autocomplete="off" placeholder="Nickname" class="inputs"/>
+                <input id="reg_password" type="password" placeholder="Password" class="inputs"/>
+                <button onclick=" reg_click(); " class="boton">Sign up</button>
+                <div id="err_reg" hidden>User <a id="areg_user"></a> already registered</div>
+            </div>
+        </div>
+
+        <div id="chatRoom" style="display: none;" class="container-fluid h100">
+            <div class="row  align-items-start h100">
+                <div class="col-2 text-center blackcolor p-1 r-border-b">
+                    <br>
+                    <button class="boton" onclick=" config(false); ">User config</button>
+                    <br>
+                    <br>
+                    <select name="rooms" id="roomInfo" class="r-border" onchange=" room_change(); " >
+                        <option value="room1">Room 1</option>
+                        <option value="room2">Room 2</option>
+                        <option value="room3">Room 3</option>
+                        <option value="room4">Room 4</option>
+                        <option value="room5">Room 5</option>
+                    </select>
+                    <h4 class="p-1 text-light m-0">Users online</h4>
+                    <div id="users" class="bg-light p-1 m-1 r-border"> </div>
+                </div>
+
+                <div id="chat" class="col-10 blackcolor p-3 r-border-b mt-0">
+                    <h2 class="text-center p-3 text-light mt-0">Chat</h2>
+                    <div class="bg-light">
+                        <ul id="messages" class=""></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fixed-bottom blackcolor">
+                <form id="formc" action="">
+                    <button class="boton" onclick=" func_img(); " type="button">Send image</button>
+                    <input id="input" autocomplete="off" placeholder="Write here to send"/>
+                    <button class="boton" type="submit">Send</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="actUser" style="display: none;">
+            <div class="title">
+                <div class="container">
+                    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
+                        <h2 class="t-text">Node Chat V3</h2>
+                        <div class="col-md-3 text-end">
+                            <button onclick=" config(true); " class="boton">Back</button>
+                        </div>
+                    </header>
+                </div>
+            </div>
+
+            <div id="forml">
+                <h4 class="t-text">Update your info</h4>
+                <input id="act_user" autocomplete="off" placeholder="New nickname" class="inputs"/>
+                <input id="act_password1" type="password" placeholder="New password" class="inputs"/>
+                <input id="act_password2" type="password" placeholder="Repeat password" class="inputs"/>
+                <button onclick=" act_click(); " class="boton">Update</button>
+            </div>
+
+            <div class="fixed-bottom text-center p-2">
+                <button onclick=" drop_click(); " class="boton_2">Drop out</button>
+                <div id="not_delete_feedback" class="c-green" hidden>User not deleted</div>
+            </div>
+        </div>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io();
+
+            var log_user = document.getElementById('log_user');
+            var log_password = document.getElementById('log_password');
+            var chatR = document.getElementById('rooms');
+
+            function log_click(){
+                if(log_user.value && log_password.value){
+                    socket.emit('chatRoomS', chatR.value);
+                    socket.emit('logged', log_user.value, log_password.value);
+
+                    document.getElementById('messages').innerHTML = '';
+                }
+            };
+
+            socket.on('succed_login', function(){
+                document.getElementById('loginP').style.display = "none";
+                document.getElementById('chatRoom').style.display = "block";
+
+                log_user.value = '';
+                log_password.value = '';
+
+                switch (chatR.value) {
+                    case "room1":
+                        document.getElementById('roomInfo').value = "room1";
+                        break;
+                    case "room2":
+                        document.getElementById('roomInfo').value = "room2";
+                        break;
+                    case "room3":
+                        document.getElementById('roomInfo').value = "room3";
+                        break;
+                    case "room4":
+                        document.getElementById('roomInfo').value = "room4";
+                        break;
+                    case "room5":
+                        document.getElementById('roomInfo').value = "room5";
+                        break;
+                }
+            });
+
+            socket.on('failed_login', function (user){
+                document.getElementById('err_log').hidden = false;
+            });
+
+            ////////////////////////////////////////////////////
+
+            var reg_user = document.getElementById('reg_user');
+            var reg_password = document.getElementById('reg_password');
+
+            function reg_click(){
+                if(reg_user.value && reg_password.value){
+                    socket.emit('register', reg_user.value, reg_password.value);
+                }
+            };
+
+            socket.on('succed_register', function(){
+                document.getElementById('loginP').style.display = "block";
+                document.getElementById('regUser').style.display = "none";
+                document.getElementById('err_reg').hidden = true;
+
+                reg_user.value = '';
+                reg_password.value = '';
+            });
+
+            socket.on('already_register', function (user){
+                document.getElementById('areg_user').innerHTML = user;
+                document.getElementById('err_reg').hidden = false;
+            });
+
+            ////////////////////////////////////////////////////
+
+            function act_click(){
+                if(act_user.value && act_password1.value && act_password2.value && act_password1.value === act_password2.value){
+                    socket.emit('update', act_user.value, act_password1.value);
+
+                    document.getElementById('chatRoom').style.display = 'block';
+                    document.getElementById('actUser').style.display = 'none';
+
+                    document.getElementById('act_user').value = '';
+                    document.getElementById('act_password1').value = '';
+                    document.getElementById('act_password2').value = '';
+                } else {
+                    alert('Passwords doesn´t match');
+                }
+            }
+
+            ////////////////////////////////////////////////////
+
+            function drop_click(){
+                let confirm_ = confirm('Are you sure about deleting your user?');
+                if(confirm_){
+                    socket.emit('drop_user');
+
+                    document.getElementById('actUser').style.display = 'none';
+                    document.getElementById('loginP').style.display = "block";
+                    document.getElementById('not_delete_feedback').hidden = true;
+
+                    alert('User deleted');
+                } else {
+                    document.getElementById('not_delete_feedback').hidden = false;
+                }
+            }
+
+            ////////////////////////////////////////////////////
+
+            socket.on('usersList', function(list){
+                document.getElementById('users').innerHTML = 'hola';
+
+                let listHTML = '';
+                for(let i in list){
+                    listHTML += '<h6>'+ list[i].name +'</h6>';
+                    document.getElementById('users').innerHTML = listHTML;
+                };
+            });
+
+            ////////////////////////////////////////////////////
+            
+            var messages = document.getElementById('messages');
+            var formc = document.getElementById('formc');
+            var input = document.getElementById('input');
+
+            formc.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (input.value) {
+                    socket.emit('chat message', input.value);
+                    input.value = '';
+                }
+            });
+
+            socket.on('chat message', function(msg) {
+                var item = document.createElement('li');
+                item.innerText = msg;
+                messages.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+
+            socket.on('chat_image', function(msg) {
+                var item = document.createElement('li');
+                item.innerHTML = msg;
+                messages.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+
+            ////////////////////////////////////////////////////
+
+            function log_reg(log_){
+                if(log_){
+                    document.getElementById('loginP').style.display = "block";
+                    document.getElementById('regUser').style.display = "none";
+                    document.getElementById('err_reg').hidden = true;
+
+                    reg_user.value = '';
+                    reg_password.value = '';
+                } else {
+                    document.getElementById('loginP').style.display = "none";
+                    document.getElementById('regUser').style.display = "block";
+                    document.getElementById('err_reg').hidden = true;
+
+                    log_user.value = '';
+                    log_password.value = '';
+                }
+            }
+
+            function func_img() {
+                let url = prompt("Introduce la url:");
+
+                if(url != "" && url != null){
+                    socket.emit('chat_image', '<img src="'+url+'"/>');
+                }
+            }
+
+            function config(act_){
+                if(act_){
+                    document.getElementById('chatRoom').style.display = 'block';
+                    document.getElementById('actUser').style.display = 'none';
+                    document.getElementById('not_delete_feedback').hidden = true;
+                } else {
+                    document.getElementById('chatRoom').style.display = 'none';
+                    document.getElementById('actUser').style.display = 'block';
+                }
+            }
+
+            function room_change(){
+                socket.emit('chat_left');
+                document.getElementById('messages').innerHTML = '';
+                
+
+                let rchange = document.getElementById('roomInfo').value;
+                socket.emit('chatRoomS', rchange);
+            }
+        </script>
+
+        <script src="assets/bootstrap.min.js"></script>
+    </body>
+</html>

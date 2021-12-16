@@ -1,0 +1,16 @@
+{
+    "name": "node-chat",
+    "version": "3.0.1",
+    "description": "Learning to create an online chat",
+    "scripts": {
+        "start": "nodemon index.js"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "mongoose": "^5.12.12",
+        "socket.io": "^4.1.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.7"
+    }
+}
